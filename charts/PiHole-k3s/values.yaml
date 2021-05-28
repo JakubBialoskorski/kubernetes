@@ -1,0 +1,157 @@
+# Default values for pihole.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+maxSurge: 1
+maxUnavailable: 1
+
+revisionHistoryLimit: 1
+
+image:
+  repository: "pihole/pihole"
+  tag: v4.4
+  pullPolicy: IfNotPresent
+
+serviceDns:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.20.225
+  annotations:
+    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+
+serviceWeb:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.20.225
+  annotations:
+    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+
+virtualHost: pi.hole
+
+# Probes configuration
+probes:
+  # probes.liveness -- Configure the healthcheck for the ingress controller
+  liveness:
+    enabled: true
+    initialDelaySeconds: 60
+    failureThreshold: 10
+    timeoutSeconds: 5
+  readiness:
+    enabled: true
+    initialDelaySeconds: 60
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+persistentVolumeClaim:
+  enabled: true
+  existingClaim: pihole-pvc
+  emptyDir: false
+  storageClassName: longhorn
+  accessModes: ReadWriteMany
+  size: "4Gi"
+  skipuninstall: true
+
+# Administrator password when not using an existing secret (see below)
+adminPassword: "admin"
+
+# Use an existing secret for the admin password.
+admin:
+  existingSecret: ""
+  passwordKey: "password"
+
+# default upstream DNS servers to use
+DNS1: "8.8.8.8"
+DNS2: "8.8.4.4"
+
+antiaff:
+  # set to true to enable antiaffinity (example: 2 pihole DNS in the same cluster)
+  enabled: true
+  # Here you can set the pihole release (you set in `helm install <releasename> ...`)
+  # you want to avoid
+  avoidRelease: pihole
+  # Here you can choose between preferred or required
+  strict: true
+
+  # Probes configuration
+  probes:
+    # probes.liveness -- Configure the healthcheck for the doh container
+    liveness:
+      enabled: true
+      initialDelaySeconds: 60
+      failureThreshold: 10
+      timeoutSeconds: 5
+
+adlists:
+  # If you want to provide blocklists, add them here.
+  # Mostly taken from https://firebog.net
+  - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+  - https://mirror1.malwaredomains.com/files/justdomains
+  - http://sysctl.org/cameleon/hosts
+  - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+  - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+  - https://hosts-file.net/ad_servers.txt
+  - https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+  - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+  - https://v.firebog.net/hosts/static/w3kbl.txt
+  - https://adaway.org/hosts.txt
+  - https://v.firebog.net/hosts/AdguardDNS.txt
+  - https://v.firebog.net/hosts/Admiral.txt
+  - https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+  - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+  - https://v.firebog.net/hosts/Easylist.txt
+  - https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
+  - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+  - https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
+  - https://v.firebog.net/hosts/Easyprivacy.txt
+  - https://v.firebog.net/hosts/Prigent-Ads.txt
+  - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+  - https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+  - https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+  - https://raw.githubusercontent.com/Kees1958/W3C_annual_most_used_survey_blocklist/master/TOP_EU_US_Ads_Trackers_HOST
+  - https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+  - https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+  - https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+  - https://v.firebog.net/hosts/Prigent-Crypto.txt
+  - https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
+  - https://phishing.army/download/phishing_army_blocklist_extended.txt
+  - https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+  - https://v.firebog.net/hosts/Shalla-mal.txt
+  - https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
+  - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+  - https://urlhaus.abuse.ch/downloads/hostfile/
+  - https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+
+whitelist:
+  # If you want to provide whitelisted domains, add them here.
+  # - clients4.google.com
+  - google.com
+  - youtube.com
+  - youtubekids.com
+  - steam.com
+  - epic.com
+  - origin.com
+  - gmail.com
+  - icloud.com
+  - statuspage.io
+  - cloudflare.com
+  - apple.com
+  - ipla.tv
+  - reddit.com
+  - click.redditmail.com
+  - facebook.com
+  - messenger.com
+
+blacklist:
+  # If you want to have special domains blacklisted, add them here
+  # - *.blackist.com
+
+regex:
+  # Add regular expression blacklist items
+  # - (^|\.)facebook\.com$
+
+webHttp: "80"
+webHttps: "443"
+hostNetwork: "false"
+privileged: "false"
+

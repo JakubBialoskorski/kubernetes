@@ -1,0 +1,41 @@
+#
+# IMPORTANT NOTE
+#
+# This chart inherits from our common library chart. You can check the default values/options here:
+# https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
+
+image:
+  repository: homeassistant/home-assistant
+  pullPolicy: IfNotPresent
+  tag: latest
+
+replicaCount: 1
+maxSurge: 1
+maxUnavailable: 0
+
+revisionHistoryLimit: 0
+
+strategy:
+  type: Recreate
+
+service:
+  port:
+    port: 8123
+  type: LoadBalancer
+  loadBalancerIP: 192.168.20.227
+  annotations:
+    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: homeassistant-svc
+
+ingress:
+  enabled: false
+
+persistence:
+  config:
+    enabled: true
+    emptyDir: false
+    storageClassName: longhorn
+    accessMode: ReadWriteOnce
+    size: 2Gi
+    skipuninstall: true
+    existingClaim: homeassistant-pvc

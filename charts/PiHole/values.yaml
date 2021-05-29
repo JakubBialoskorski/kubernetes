@@ -73,15 +73,6 @@ antiaff:
   # Here you can choose between preferred or required
   strict: true
 
-  # Probes configuration
-  probes:
-    # probes.liveness -- Configure the healthcheck for the doh container
-    liveness:
-      enabled: true
-      initialDelaySeconds: 60
-      failureThreshold: 10
-      timeoutSeconds: 5
-
 adlists:
   # If you want to provide blocklists, add them here.
   # Mostly taken from https://firebog.net

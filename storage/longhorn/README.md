@@ -1,3 +1,5 @@
+Project page is [here](https://longhorn.io/) .
+
 #### `git clone -b v1.1.0 https://github.com/longhorn/longhorn.git`
 
 Edit the chart (set UI from ClusterIP to LoadBalancer) then:

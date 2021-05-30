@@ -1,5 +1,7 @@
 Project page is [here](https://longhorn.io/) .
 
+I highly recommend reading [this](https://rpi4cluster.com/k3s/k3s-storage-setting/) article, as you may use formatted pendrives with Raspberry Pi's for Longhorn (this needs to be set up before initialising storage controller).
+
 #### `git clone -b v1.1.0 https://github.com/longhorn/longhorn.git`
 
 Edit the chart (set UI from ClusterIP to LoadBalancer) then:

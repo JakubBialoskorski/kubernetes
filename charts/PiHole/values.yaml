@@ -123,6 +123,7 @@ whitelist:
   - gmail.com
   - icloud.com
   - statuspage.io
+  - snyk.io
   - cloudflare.com
   - apple.com
   - ipla.tv

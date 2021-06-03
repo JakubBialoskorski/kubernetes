@@ -131,6 +131,8 @@ whitelist:
   - click.redditmail.com
   - facebook.com
   - messenger.com
+  - webex.com
+  - zoom.us
 
 blacklist:
   # If you want to have special domains blacklisted, add them here

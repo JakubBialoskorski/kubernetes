@@ -3,7 +3,7 @@
 image:
   repository: homeassistant/home-assistant
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: 2021.11.5
 
 replicaCount: 1
 maxSurge: 1
@@ -15,16 +15,19 @@ strategy:
   type: Recreate
 
 service:
-  port:
-    port: 8123
-  type: LoadBalancer
-  loadBalancerIP: 192.168.20.221
-  annotations:
-    metallb.universe.tf/address-pool: default
-    metallb.universe.tf/allow-shared-ip: homeassistant-svc
+  main:
+    ports:
+      http:
+        port: 8123
+    type: LoadBalancer
+    loadBalancerIP: 192.168.20.221
+    annotations:
+      metallb.universe.tf/address-pool: default
+      metallb.universe.tf/allow-shared-ip: homeassistant-svc
 
 ingress:
-  enabled: false
+  main:
+    enabled: false
 
 persistence:
   config:

@@ -1,4 +1,4 @@
-# Quake 3 Arena on K3s
+# Quake 3 Arena on k3s
 Original article: https://johansiebens.dev/posts/2020/11/quake-iii-arena-k3s-and-a-raspberry-pi/
 
 ### How to run

@@ -59,8 +59,8 @@ admin:
   passwordKey: "password"
 
 # default upstream DNS servers to use
-DNS1: "8.8.8.8"
-DNS2: "8.8.4.4"
+DNS1: "208.67.222.123"
+DNS2: "208.67.220.123"
 
 antiaff:
   # set to true to enable antiaffinity (example: 2 pihole DNS in the same cluster)
